@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101b35">
+
+<title>Between Sky & Earth | Weathering with You</title>
+
+<style>
+:root {
+    --sky-dark: #101b35;
+    --sky-mid: #263b60;
+    --text-main: #f0f3fb;
+    --text-soft: #c8d9f8;
+    --accent: #a9c9fa;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Georgia, "Times New Roman", serif;
+    background: linear-gradient(
+        180deg,
+        #101b35 0%,
+        #263b60 48%,
+        #647a9e 100%
+    );
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* BACKGROUND */
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glow {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: rgba(142, 185, 255, 0.12);
+    filter: blur(90px);
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: glowPulse 7s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+    from {
+        opacity: 0.4;
+        transform: translateX(-50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.2);
+    }
+}
+
+/* RAIN */
+
+.rain {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5;
+    transition: opacity 2s ease;
+}
+
+.drop {
+    position: absolute;
+    top: -40px;
+    width: 1px;
+    height: 35px;
+    background: linear-gradient(
+        transparent,
+        rgba(220, 235, 255, 0.65)
+    );
+    animation: rainFall linear infinite;
+}
+
+@keyframes rainFall {
+    to {
+        transform: translate3d(-30px, 110vh, 0);
+    }
+}
+
+/* FLOATING LIGHTS */
+
+.lights {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.light {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #e0eeff;
+    box-shadow: 0 0 12px 3px rgba(183, 214, 255, 0.35);
+    animation: floatLight linear infinite;
+}
+
+@keyframes floatLight {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-150px);
+        opacity: 0;
+    }
+}
+
+/* MAIN CONTENT */
+
+.container {
+    position: relative;
+    z-index: 2;
+    width: min(90%, 760px);
+    margin: auto;
+    padding: 55px 0 35px;
+    text-align: center;
+}
+
+.label {
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 10px;
+    color: var(--text-soft);
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease;
+}
+
+h1 {
+    font-size: clamp(32px, 7vw, 58px);
+    font-weight: normal;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    text-shadow: 0 0 35px rgba(185, 214, 255, 0.3);
+    animation: fadeIn 2s ease;
+}
+
+.subtitle {
+    color: #d0d9eb;
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 38px;
+}
+
+/* VIDEO */
+
+.video-frame {
+    position: relative;
+    padding: 8px;
+    border: 1px solid rgba(210, 225, 255, 0.35);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 15px 55px rgba(0, 0, 0, 0.35);
+    animation: rise 1.5s ease;
+    transition: box-shadow 0.5s ease;
+}
+
+.video-frame:hover {
+    box-shadow:
+        0 15px 55px rgba(0, 0, 0, 0.35),
+        0 0 30px rgba(160, 200, 255, 0.12);
+}
+
+video {
+    display: block;
+    width: 100%;
+    max-height: 75vh;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: #080d19;
+    border-radius: 12px;
+}
+
+/* CAPTION */
+
+.caption-card {
+    margin-top: 32px;
+    padding: 30px 25px;
+    border: 1px solid rgba(220, 230, 255, 0.2);
+    border-radius: 16px;
+    background: rgba(12, 24, 48, 0.35);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.caption-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 22px;
+}
+
+#caption {
+    font-size: clamp(16px, 3vw, 19px);
+    line-height: 1.95;
+    color: var(--text-main);
+    white-space: pre-wrap;
+}
+
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 18px;
+    background: #c4dcff;
+    margin-left: 3px;
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* BUTTONS */
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+button {
+    padding: 12px 22px;
+    border: 1px solid rgba(195, 215, 246, 0.65);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.03);
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: rgba(220, 234, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 4px;
+}
+
+/* FOOTER */
+
+footer {
+    margin-top: 45px;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    line-height: 2;
+    color: #c2cee3;
+    opacity: 0.8;
+}
+
+/* ENDING SCENE */
+
+#endingScene {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    overflow-y: auto;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 35%,
+            rgba(76, 111, 165, 0.3),
+            transparent 65%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(8, 15, 32, 0.98),
+            rgba(24, 39, 65, 0.99)
+        );
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 2s ease,
+        visibility 2s ease;
+}
+
+#endingScene.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.ending-content {
+    width: min(100%, 620px);
+    text-align: center;
+    padding: 35px 0;
+}
+
+.ending-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--accent);
+    margin-bottom: 30px;
+}
+
+.ending-content h2 {
+    font-size: clamp(28px, 6vw, 45px);
+    font-weight: normal;
+    line-height: 1.4;
+    margin-bottom: 25px;
+    color: #f3f6ff;
+}
+
+.ending-text {
+    color: #d8e1f1;
+    font-size: 16px;
+    line-height: 2;
+}
+
+.ending-quote {
+    color: #c5d9ff;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.8;
+    margin-top: 30px;
+}
+
+.ending-credit {
+    margin-top: 35px;
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #9aacc9;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+    .container {
+        width: 92%;
+        padding-top: 40px;
+    }
+
+    .label {
+        letter-spacing: 3px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 28px;
+    }
+
+    .caption-card {
+        padding: 25px 18px;
+    }
+
+    #caption {
+        font-size: 16px;
+        line-height: 1.85;
+    }
+
+    .ending-text {
+        font-size: 14px;
+    }
+
+    .ending-quote {
+        font-size: 15px;
+    }
+
+    button {
+        padding: 12px 17px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="glow"></div>
+</div>
+
+<div class="rain" id="rain"></div>
+<div class="lights" id="lights"></div>
+
+<!-- MAIN -->
+<main class="container">
+
+    <div class="label">A Story Written in the Sky</div>
+
+    <h1>Between Sky &amp; Earth</h1>
+
+    <p class="subtitle">
+        Somewhere between destiny and love.
+    </p>
+
+    <!-- VIDEO TERBARU -->
+    <div class="video-frame">
+        <video
+            id="movie"
+            controls
+            playsinline
+            preload="metadata"
+        >
+            <source
+                src="https://raw.githubusercontent.com/redbals359-cyber/fallanime/main/AllVideo_01791647339351.mp4"
+                type="video/mp4">
+
+            Browser kamu tidak mendukung pemutaran video.
+        </video>
+    </div>
+
+    <!-- CAPTION -->
+    <section class="caption-card">
+
+        <div class="caption-label">
+            ✦ THE STORY ✦
+        </div>
+
+        <p id="caption"></p>
+        <span class="cursor" id="cursor"></span>
+
+        <div class="buttons">
+            <button id="replayCaption">
+                ↻ Baca Kembali
+            </button>
+
+            <button id="copyCaption">
+                Salin Caption
+            </button>
+        </div>
+
+    </section>
+
+    <footer>
+        WEATHERING WITH YOU · TENKI NO KO
+        <br>
+        BETWEEN THE SKY AND THE EARTH
+    </footer>
+
+</main>
+
+<!-- ENDING SCENE -->
+<div id="endingScene" aria-hidden="true">
+
+    <div class="ending-content">
+
+        <p class="ending-label">
+            THREE YEARS LATER
+        </p>
+
+        <h2>
+            Even if the rain never stops...
+        </h2>
+
+        <p class="ending-text">
+            Tiga tahun berlalu, dan langit masih menangis.
+            Namun, di antara kota yang tenggelam dan kenangan
+            yang tak pernah hilang, dua hati kembali menemukan
+            jalan pulang.
+
+            <br><br>
+
+            Dunia mungkin tak lagi sama. Langit mungkin tak
+            pernah kembali seperti dahulu. Namun, terkadang,
+            kebahagiaan bukan tentang mengembalikan segalanya
+            seperti semula, melainkan keberanian untuk menerima
+            dunia yang baru.
+
+            <br><br>
+
+            Sebab, di antara hujan yang tak kunjung reda,
+            ada pertemuan yang membuat semua penantian
+            terasa berarti.
+        </p>
+
+        <p class="ending-quote">
+            "Di dunia yang tak lagi sama,
+            aku tetap memilihmu."
+        </p>
+
+        <div class="ending-credit">
+            WEATHERING WITH YOU · A STORY OF CHOICE
+        </div>
+
+        <div class="buttons">
+            <button id="replayMovie">
+                ↻ Putar Kembali
+            </button>
+
+            <button id="closeEnding">
+                Kembali ke Halaman
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+/* =====================================
+   CAPTION
+===================================== */
+
+const captionText =
+`Di antara hamparan awan dan langit yang tak berujung, seorang perempuan jatuh perlahan, seolah semesta sedang mengembalikan sesuatu yang pernah dipinjamnya dari bumi. Namun, seorang laki-laki berlari mengejarnya, menembus batas antara kenyataan dan keajaiban, seakan jarak antara langit dan bumi hanyalah perkara keberanian. Ia tak peduli pada hujan yang mengancam dunia, tak gentar pada takdir yang mencoba memisahkan mereka; baginya, lebih baik hidup di dunia yang kehilangan cerahnya daripada tinggal di dunia yang tak lagi memiliki dirinya. Sebab, terkadang, cinta bukanlah tentang menyelamatkan seluruh dunia, melainkan tentang memilih seseorang yang membuat dunia itu layak untuk ditinggali.`;
+
+const captionElement = document.getElementById("caption");
+const cursorElement = document.getElementById("cursor");
+const replayCaptionButton = document.getElementById("replayCaption");
+const copyCaptionButton = document.getElementById("copyCaption");
+
+let typingTimer = null;
+let characterIndex = 0;
+
+function typeCaption() {
+    clearInterval(typingTimer);
+
+    characterIndex = 0;
+    captionElement.textContent = "";
+    cursorElement.style.display = "inline-block";
+
+    typingTimer = setInterval(() => {
+
+        captionElement.textContent +=
+            captionText.charAt(characterIndex);
+
+        characterIndex++;
+
+        if (characterIndex >= captionText.length) {
+            clearInterval(typingTimer);
+            cursorElement.style.display = "none";
+        }
+
+    }, 25);
+}
+
+replayCaptionButton.addEventListener("click", typeCaption);
+
+
+/* =====================================
+   COPY CAPTION
+===================================== */
+
+copyCaptionButton.addEventListener("click", async () => {
+
+    try {
+
+        await navigator.clipboard.writeText(captionText);
+
+    } catch (error) {
+
+        const textarea = document.createElement("textarea");
+
+        textarea.value = captionText;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+
+        document.body.appendChild(textarea);
+
+        textarea.select();
+
+        const successful = document.execCommand("copy");
+
+        textarea.remove();
+
+        if (!successful) {
+            copyCaptionButton.textContent = "Gagal menyalin";
+            return;
+        }
+
+    }
+
+    copyCaptionButton.textContent = "✓ Caption Tersalin!";
+
+    setTimeout(() => {
+        copyCaptionButton.textContent = "Salin Caption";
+    }, 2000);
+
+});
+
+
+/* =====================================
+   RAIN EFFECT
+===================================== */
+
+const rainContainer = document.getElementById("rain");
+
+for (let i = 0; i < 75; i++) {
+
+    const drop = document.createElement("span");
+
+    drop.className = "drop";
+
+    drop.style.left = Math.random() * 100 + "%";
+
+    drop.style.animationDuration =
+        (0.7 + Math.random() * 1.3) + "s";
+
+    drop.style.animationDelay =
+        (-Math.random() * 3) + "s";
+
+    drop.style.opacity =
+        0.15 + Math.random() * 0.5;
+
+    rainContainer.appendChild(drop);
+
+}
+
+
+/* =====================================
+   FLOATING LIGHT EFFECT
+===================================== */
+
+const lightsContainer = document.getElementById("lights");
+
+for (let i = 0; i < 28; i++) {
+
+    const light = document.createElement("span");
+
+    light.className = "light";
+
+    light.style.left = Math.random() * 100 + "%";
+
+    light.style.top = (30 + Math.random() * 70) + "%";
+
+    light.style.animationDuration =
+        (5 + Math.random() * 8) + "s";
+
+    light.style.animationDelay =
+        (-Math.random() * 10) + "s";
+
+    lightsContainer.appendChild(light);
+
+}
+
+
+/* =====================================
+   ENDING SCENE
+===================================== */
+
+const movie = document.getElementById("movie");
+const endingScene = document.getElementById("endingScene");
+const replayMovieButton = document.getElementById("replayMovie");
+const closeEndingButton = document.getElementById("closeEnding");
+
+function showEnding() {
+
+    endingScene.classList.add("show");
+
+    endingScene.setAttribute("aria-hidden", "false");
+
+    rainContainer.style.opacity = "0.15";
+
+}
+
+function hideEnding() {
+
+    endingScene.classList.remove("show");
+
+    endingScene.setAttribute("aria-hidden", "true");
+
+    rainContainer.style.opacity = "1";
+
+}
+
+movie.addEventListener("ended", () => {
+
+    showEnding();
+
+});
+
+replayMovieButton.addEventListener("click", async () => {
+
+    hideEnding();
+
+    movie.currentTime = 0;
+
+    try {
+
+        await movie.play();
+
+    } catch (error) {
+
+        // Jika browser memblokir pemutaran,
+        // pengguna dapat menekan tombol Play pada video.
+
+    }
+
+});
+
+closeEndingButton.addEventListener("click", () => {
+
+    hideEnding();
+
+});
+
+
+/* =====================================
+   INITIALIZE
+===================================== */
+
+typeCaption();
+</script>
+
+</body>
+</html>
